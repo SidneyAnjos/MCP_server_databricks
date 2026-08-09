@@ -1,0 +1,21 @@
+# Databricks App manifest for the Weather MCP Server.
+#
+# Deploys the FastMCP server as its own Databricks App. The app listens on
+# $PORT (Databricks Apps default 8000) and serves the streamable-HTTP MCP
+# endpoint at /mcp.
+#
+# Deploy options (see README.md):
+#   1. UI: Databricks workspace -> Apps -> Create app -> connect GitHub repo
+#      -> source folder = mcp_server/  -> Deploy.
+#   2. CLI: databricks apps create weather-mcp-server && databricks sync
+#      mcp_server <ws-path> && databricks apps deploy weather-mcp-server
+#      --source-code-path <ws-path>
+#
+# App name should start with "mcp-" so the workspace treats it as an MCP
+# server (e.g. "mcp-weather-server").
+#
+# No secrets are required: Open-Meteo needs no API key.
+
+command:
+  - python
+  - weather_mcp_server.py

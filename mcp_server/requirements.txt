@@ -1,0 +1,8 @@
+# FastMCP high-level API (mcp.server.fastmcp) requires the 1.x line;
+# mcp 2.x removed it. Keep pinned below 2.
+mcp[cli]>=1.16,<2
+# HTTP + JSON client for the Open-Meteo data source (used by weather_broker.py)
+requests>=2.31
+# ASGI stack used by mcp.streamable_http_app() and the /mcp mount
+fastapi>=0.115
+uvicorn>=0.30
