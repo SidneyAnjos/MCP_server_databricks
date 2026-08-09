@@ -1,2 +1,12 @@
-
+# Databricks bundle artifacts
 .databricks
+
+# Python
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+
+# Local scratch
+*.log
+.dash_smoke.log
