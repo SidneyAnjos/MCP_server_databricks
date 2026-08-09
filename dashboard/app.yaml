@@ -1,0 +1,19 @@
+# Databricks App manifest for the Weather Intelligence dashboard (stretch).
+#
+# Deploys the Streamlit explorer as its own Databricks App (the same
+# mcp_server/ + dashboard/ split as Day 3). Source folder for this app is
+# dashboard/.
+#
+# Deploy (see README.md):
+#   1. UI: Apps -> Create app -> connect GitHub repo -> source folder =
+#      dashboard/ -> Deploy.
+#   2. CLI: databricks apps create weather-dashboard && databricks sync
+#      dashboard <ws-path> && databricks apps deploy weather-dashboard
+#      --source-code-path <ws-path>
+#
+# No secrets required (Open-Meteo needs no API key).
+
+command:
+  - streamlit
+  - run
+  - app.py

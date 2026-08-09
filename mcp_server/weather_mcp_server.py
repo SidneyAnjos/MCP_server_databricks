@@ -25,11 +25,20 @@ Data source: Open-Meteo -- free, no API key, no signup, no credit card.
 
 import json
 import os
+import warnings
 from typing import List
 
-from mcp.server.fastmcp import FastMCP
+# Silence a harmless pydantic-settings warning emitted by mcp's settings
+# model (unresolved forward ref on the lifespan field). Log noise only.
+warnings.filterwarnings(
+    "ignore",
+    message=r"Field 'lifespan' has an incomplete definition.*",
+    module=r"pydantic_settings.*",
+)
 
-import weather_broker
+from mcp.server.fastmcp import FastMCP  # noqa: E402
+
+import weather_broker  # noqa: E402
 
 mcp = FastMCP("weather-mcp-server")
 
@@ -174,7 +183,7 @@ def compare_weather(locations: List[str], days: int = weather_broker.DEFAULT_FOR
 
 
 # ---------------------------------------------------------------------------
-# HTTP wiring (FastAPI wrapper + streamable-http at /mcp)
+# HTTP wiring (Starlette wrapper + streamable-http at /mcp)
 # ---------------------------------------------------------------------------
 
 # Tool catalog for the landing page / health endpoint.
@@ -189,28 +198,45 @@ TOOL_CATALOG = [
 
 
 def create_app():
-    """Build the FastAPI application exposing the MCP endpoint at /mcp."""
-    from fastapi import FastAPI
-    from fastapi.responses import JSONResponse
+    """Build the ASGI app: MCP endpoint at /mcp plus a landing/health page at /.
+
+    FastMCP's streamable-http app already routes the MCP endpoint at /mcp
+    internally (mcp.settings.streamable_http_path), so it is mounted at the
+    root and /mcp falls through to it. Because Starlette does not run the
+    lifespan of mounted apps, we re-run mcp.session_manager.run() in the
+    parent's lifespan (same wiring as the official Databricks example).
+    """
+    from contextlib import asynccontextmanager
+
+    from starlette.applications import Starlette
+    from starlette.responses import JSONResponse
+    from starlette.routing import Mount, Route
 
     mcp_starlette = mcp.streamable_http_app()
 
-    app = FastAPI(title="Weather MCP Server", version="1.0.0")
+    @asynccontextmanager
+    async def lifespan(_app):
+        async with mcp.session_manager.run():
+            yield
 
-    @app.get("/", include_in_schema=False)
-    def index() -> JSONResponse:
+    async def index(request) -> JSONResponse:
         return JSONResponse({
             "service": "Weather MCP Server",
             "mcp_endpoint": "/mcp",
             "tools": TOOL_CATALOG,
         })
 
-    @app.get("/health", include_in_schema=False)
-    def health() -> JSONResponse:
+    async def health(request) -> JSONResponse:
         return JSONResponse({"status": "ok", "tools": len(TOOL_CATALOG)})
 
-    app.mount("/mcp", mcp_starlette)
-    return app
+    return Starlette(
+        routes=[
+            Route("/", index),
+            Route("/health", health),
+            Mount("/", app=mcp_starlette),
+        ],
+        lifespan=lifespan,
+    )
 
 
 app = create_app()

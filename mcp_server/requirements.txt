@@ -3,6 +3,5 @@
 mcp[cli]>=1.16,<2
 # HTTP + JSON client for the Open-Meteo data source (used by weather_broker.py)
 requests>=2.31
-# ASGI stack used by mcp.streamable_http_app() and the /mcp mount
-fastapi>=0.115
+# ASGI server (the app is built on starlette, which ships with mcp)
 uvicorn>=0.30
