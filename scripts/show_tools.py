@@ -5,7 +5,8 @@ Print the exact `tools/list` response the Weather MCP Server advertises — the
 same payload MCP Inspector shows when you connect to the running server, and
 the same payload Agent Bricks reads to populate the agent's tool list.
 
-This is the reproducibility script behind `evidence/tools_list.json`.
+This is the reproducibility script behind `submission/evidence/tools_list.json`
+(built by `scripts/build_submission.py`).
 
 Modes:
     python scripts/show_tools.py              # pretty JSON to stdout (default)

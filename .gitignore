@@ -10,3 +10,7 @@ __pycache__/
 # Local scratch
 *.log
 .dash_smoke.log
+
+# Generated submission package (scripts/build_submission.py) — build on demand
+submission/
+submission.zip

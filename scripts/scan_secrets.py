@@ -7,9 +7,9 @@ It scans **git-tracked files only** (via `git ls-files`), so build artifacts,
 `.venv/`, and caches are excluded automatically. Any match is printed as
 `file:line` and the script exits 1; a clean run exits 0.
 
-This is the reproducibility script behind `evidence/secret_scan.txt` — the
-output proves the "no hardcoded API keys or secrets in committed code"
-grading criterion.
+This is the reproducibility script behind `submission/evidence/secret_scan.txt`
+(built by `scripts/build_submission.py`) — the output proves the "no hardcoded
+API keys or secrets in committed code" grading criterion.
 
 Checks:
   - AWS access key IDs              AKIA[0-9A-Z]{16}

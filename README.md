@@ -24,6 +24,39 @@ locally before any secrets or workspace setup are needed.
 | Dashboard (stretch) | `dashboard/` | Streamlit explorer that mirrors the tools & logs queries |
 | Unit tests | `tests/test_weather_broker.py` | 28 tests, mocked HTTP |
 | Demo | `demo/agent_demo.py` | Boots the real server, drives it over MCP, prints Q&A traces |
+| Submission builder | `scripts/build_submission.py` | Assembles `submission/` (code + evidence) + `submission.zip` |
+
+---
+
+## Submission package
+
+If you're submitting this for review, build the package first — reviewers must
+be able to read the actual code, and the scoring rubric awards **0/30 on "MCP
+Server Correctness"** when the server source and app configs aren't included in
+what you attach.
+
+```bash
+python scripts/build_submission.py
+```
+
+This produces, at the repo root:
+
+- `submission/code/` — the real `weather_mcp_server.py`, `weather_broker.py`,
+  `app.yaml`, and `requirements.txt` (the files reviewers asked to paste).
+- `submission/evidence/` — machine-generated proof of every grading criterion:
+  the exact `tools/list` payload (`tools_list.json`), `pytest` output
+  (`test_results.txt`), failing-path transcripts (`failing_paths.txt`), the live
+  HTTP endpoint run log (`local_run_log.txt`), the secret scan
+  (`secret_scan.txt`), and the 4-question agent Q&A trace (`agent_demo.txt`).
+- `submission/agent_config/` + `submission/demo/` — the prompt/manifest and the
+  runnable demos.
+- `submission/README.md` — a cover sheet mapping each grading criterion to the
+  evidence file that satisfies it.
+- `submission.zip` — the whole folder, for one-file upload.
+
+The package is **gitignored** (generated on demand; see `.gitignore`). The two
+network-dependent evidence files (`local_run_log.txt`, `agent_demo.txt`) degrade
+to a `WARN` if you're offline; every other artifact is offline/mocked.
 
 ---
 
