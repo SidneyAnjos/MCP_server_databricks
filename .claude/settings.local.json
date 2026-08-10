@@ -2,7 +2,7 @@
   "env": {
     "ANTHROPIC_BASE_URL": "http://localhost:20128/v1",
     "ANTHROPIC_AUTH_TOKEN": "omniroute",
-    "ANTHROPIC_API_KEY": "<sk-071114b1060312e2-fdbc9c-38bd9670>",
+    "ANTHROPIC_API_KEY": "<sk-071114b1060312e2-519b68-9f83caf3>",
     "ANTHROPIC_MODEL": "auto/best-free",
     "ANTHROPIC_SMALL_FAST_MODEL": "auto/best-free",
     "ANTHROPIC_DEFAULT_OPUS_MODEL": "oc/deepseek-v4-flash-free",
