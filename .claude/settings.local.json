@@ -57,7 +57,9 @@
       "Bash(.venv/Scripts/python -m pip install --quiet --upgrade pip)",
       "Bash(.venv/Scripts/python -m pip install --quiet \"mcp[cli]\" requests pytest)",
       "Bash(.venv/Scripts/python -c \"import mcp, mcp.server.fastmcp; from importlib.metadata import version; print\\('mcp', version\\('mcp'\\)\\); from mcp.server.fastmcp import FastMCP; m=FastMCP\\('t'\\); print\\('has streamable_http_app:', hasattr\\(m,'streamable_http_app'\\)\\); print\\('has run:', hasattr\\(m,'run'\\)\\)\")",
-      "Bash(.venv/Scripts/python -m pip install \"mcp[cli]\" requests pytest)"
+      "Bash(.venv/Scripts/python -m pip install \"mcp[cli]\" requests pytest)",
+      "Bash(.venv/Scripts/python -m py_compile pipeline/00_setup_tables.py pipeline/01_ingest_raw.py pipeline/02_transform_silver.py pipeline/03_embed.py pipeline/04_vector_index.py app/app.py app/db.py app/jikan.py app/vectorstore.py app/tools.py app/agent.py)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" --max-time 15 \"https://api.jikan.moe/v4/top/anime?limit=1&page=1\")"
     ]
   },
   "model": "opus",
