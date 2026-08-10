@@ -70,12 +70,18 @@ def _utf8() -> None:
 
 
 def _run(cmd, cwd=ROOT, env=None, timeout=240):
-    """Run a command, return (returncode, stdout+stderr text)."""
+    """Run a command, return (returncode, stdout+stderr text).
+
+    Decodes child output as UTF-8 (the repo scripts reconfigure their stdout to
+    UTF-8) so em-dashes / accented city names survive; without an explicit
+    decode, Windows subprocess text mode would use the locale codepage (cp1252)
+    and mangle them.
+    """
     proc = subprocess.run(
-        cmd, cwd=str(cwd), env=env, capture_output=True, text=True, timeout=timeout
+        cmd, cwd=str(cwd), env=env, capture_output=True, timeout=timeout
     )
-    out = (proc.stdout or "") + (proc.stderr or "")
-    return proc.returncode, out
+    out = (proc.stdout or b"") + (proc.stderr or b"")
+    return proc.returncode, out.decode("utf-8", errors="replace")
 
 
 # ---------------------------------------------------------------------------
