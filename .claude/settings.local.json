@@ -60,7 +60,10 @@
       "Bash(.venv/Scripts/python -m pip install \"mcp[cli]\" requests pytest)",
       "Bash(.venv/Scripts/python -m py_compile pipeline/00_setup_tables.py pipeline/01_ingest_raw.py pipeline/02_transform_silver.py pipeline/03_embed.py pipeline/04_vector_index.py app/app.py app/db.py app/jikan.py app/vectorstore.py app/tools.py app/agent.py)",
       "Bash(curl -s -o /dev/null -w \"%{http_code}\" --max-time 15 \"https://api.jikan.moe/v4/top/anime?limit=1&page=1\")",
-      "Bash(.venv/Scripts/python.exe -c \"import mcp; print\\(mcp.__version__ if hasattr\\(mcp,'__version__'\\) else 'n/a'\\); from importlib.metadata import version; print\\(version\\('mcp'\\)\\)\")"
+      "Bash(.venv/Scripts/python.exe -c \"import mcp; print\\(mcp.__version__ if hasattr\\(mcp,'__version__'\\) else 'n/a'\\); from importlib.metadata import version; print\\(version\\('mcp'\\)\\)\")",
+      "Bash(.venv/Scripts/python.exe --version)",
+      "Bash(.venv/Scripts/python.exe -c \"import mcp; print\\('mcp', mcp.__version__\\)\")",
+      "Bash(.venv/Scripts/python.exe -m pytest tests/ -q)"
     ]
   },
   "model": "opus",
